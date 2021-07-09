@@ -3,6 +3,7 @@ import "./App.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setApiData } from "./redux/reducer";
+import Homepage from "./pages/Homepage";
 
 function App() {
   const state = useSelector((state) => state);
@@ -21,7 +22,9 @@ function App() {
       });
   }, []);
 
-  return <div></div>;
+  return <div>
+    <Homepage/>
+  </div>;
 }
 
 export default App;
