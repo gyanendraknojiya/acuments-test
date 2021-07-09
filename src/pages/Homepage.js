@@ -14,10 +14,10 @@ const Homepage = () => {
   const data = useSelector((state) => state.data);
 
   const [previewData, setPreviewData] = useState([]);
-  const [searchByName, setSearchByName] = useState(null);
-  const [filterByLaunchDate, setFilterByLaunchDate] = useState(null); // 1: last week, 2: last month, 3: last year
-  const [filterByLaunchStatus, setFilterByLaunchStatus] = useState(null); // 1: success, 2: failure
-  const [upcoming, setUpcoming] = useState(null); //1: true, 2: false
+  const [searchByName, setSearchByName] = useState("");
+  const [filterByLaunchDate, setFilterByLaunchDate] = useState(""); // 1: last week, 2: last month, 3: last year
+  const [filterByLaunchStatus, setFilterByLaunchStatus] = useState(""); // 1: success, 2: failure
+  const [upcoming, setUpcoming] = useState(""); //1: true, 2: false
 
   useEffect(() => {
     setPreviewData(data);
@@ -27,13 +27,12 @@ const Homepage = () => {
 
   useEffect(() => {
     if (searchByName) {
-      setFilterByLaunchDate(null);
-      setFilterByLaunchStatus(null);
-      setUpcoming(null);
+      setFilterByLaunchDate("");
+      setFilterByLaunchStatus("");
+      setUpcoming("");
       let temp = data.filter((mission) =>
         mission.rocket.rocket_name.includes(searchByName)
       );
-      console.log(temp);
       setPreviewData([...temp]);
     } else {
       setPreviewData(data);
@@ -44,15 +43,13 @@ const Homepage = () => {
 
   useEffect(() => {
     if (filterByLaunchDate) {
-      setSearchByName(null);
-      setFilterByLaunchStatus(null);
-      setUpcoming(null);
+      setSearchByName("");
+      setFilterByLaunchStatus("");
+      setUpcoming("");
       if (filterByLaunchDate === 1) {
         let date = new Date();
         const newDate = new Date(date.setDate(date.getDate() - 7));
-        console.log(newDate.valueOf());
         let temp = data.filter((mission) => {
-          console.log(mission.launch_date_unix * 1000);
           return (
             mission.launch_date_unix * 1000 >= newDate.valueOf() &&
             mission.launch_date_unix * 1000 <= Date.now()
@@ -62,9 +59,7 @@ const Homepage = () => {
       } else if (filterByLaunchDate === 2) {
         let date = new Date();
         const newDate = new Date(date.setDate(date.getDate() - 30));
-        console.log(newDate.valueOf());
         let temp = data.filter((mission) => {
-          console.log(mission.launch_date_unix * 1000);
           return (
             mission.launch_date_unix * 1000 >= newDate.valueOf() &&
             mission.launch_date_unix * 1000 <= Date.now()
@@ -74,9 +69,7 @@ const Homepage = () => {
       } else if (filterByLaunchDate === 3) {
         let date = new Date();
         const newDate = new Date(date.setDate(date.getDate() - 365));
-        console.log(newDate.valueOf());
         let temp = data.filter((mission) => {
-          console.log(mission.launch_date_unix * 1000);
           return (
             mission.launch_date_unix * 1000 >= newDate.valueOf() &&
             mission.launch_date_unix * 1000 <= Date.now()
@@ -93,17 +86,15 @@ const Homepage = () => {
 
   useEffect(() => {
     if (filterByLaunchStatus) {
-      setSearchByName(null);
-      setFilterByLaunchDate(null);
-      setUpcoming(null);
+      setSearchByName("");
+      setFilterByLaunchDate("");
+      setUpcoming("");
       if (filterByLaunchStatus === 1) {
         let temp = data.filter((mission) => mission.launch_success);
-        console.log(temp);
         setPreviewData([...temp]);
       }
       if (filterByLaunchStatus === 2) {
         let temp = data.filter((mission) => !mission.launch_success);
-        console.log(temp);
         setPreviewData([...temp]);
       }
     } else {
@@ -115,17 +106,15 @@ const Homepage = () => {
 
   useEffect(() => {
     if (upcoming) {
-      setSearchByName(null);
-      setFilterByLaunchDate(null);
-      setFilterByLaunchStatus(null);
+      setSearchByName("");
+      setFilterByLaunchDate("");
+      setFilterByLaunchStatus("");
       if (upcoming === 1) {
         let temp = data.filter((mission) => mission.upcoming);
-        console.log(temp);
         setPreviewData([...temp]);
       }
       if (upcoming === 2) {
         let temp = data.filter((mission) => !mission.upcoming);
-        console.log(temp);
         setPreviewData([...temp]);
       }
     } else {
@@ -156,7 +145,7 @@ const Homepage = () => {
                 value={filterByLaunchDate}
                 onChange={(e) => setFilterByLaunchDate(e.target.value)}
               >
-                <MenuItem value={null}>None</MenuItem>
+                <MenuItem value={""}>None</MenuItem>
                 <MenuItem value={1}>Last Week</MenuItem>
                 <MenuItem value={2}>Last Month</MenuItem>
                 <MenuItem value={3}>Last Year</MenuItem>
@@ -173,7 +162,7 @@ const Homepage = () => {
                 value={filterByLaunchStatus}
                 onChange={(e) => setFilterByLaunchStatus(e.target.value)}
               >
-                <MenuItem value={null}>None</MenuItem>
+                <MenuItem value={""}>None</MenuItem>
                 <MenuItem value={1}>Success</MenuItem>
                 <MenuItem value={2}>Failure</MenuItem>
               </Select>
@@ -187,7 +176,7 @@ const Homepage = () => {
                 value={upcoming}
                 onChange={(e) => setUpcoming(e.target.value)}
               >
-                <MenuItem value={null}>None</MenuItem>
+                <MenuItem value={""}>None</MenuItem>
                 <MenuItem value={1}>True</MenuItem>
                 <MenuItem value={2}>False</MenuItem>
               </Select>
@@ -203,8 +192,8 @@ const Homepage = () => {
           <div className="row">
             {previewData.length ? (
               previewData.map((mission, idx) => (
-                <div className="col-md-4  my-2">
-                  <MissionCard key={idx} {...mission} />
+                <div className="col-md-4  my-2" key={idx} >
+                  <MissionCard  {...mission} />
                 </div>
               ))
             ) : (
