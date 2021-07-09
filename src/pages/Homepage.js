@@ -17,19 +17,19 @@ const Homepage = () => {
   const [searchByName, setSearchByName] = useState(null);
   const [filterByLaunchDate, setFilterByLaunchDate] = useState(null); // 1: last week, 2: last month, 3: last year
   const [filterByLaunchStatus, setFilterByLaunchStatus] = useState(null); // 1: success, 2: failure
-
   const [upcoming, setUpcoming] = useState(null); //1: true, 2: false
 
   useEffect(() => {
     setPreviewData(data);
   }, [data]);
 
-
   // ----------------------------- search by name ----------------------------
 
   useEffect(() => {
     if (searchByName) {
       setFilterByLaunchDate(null);
+      setFilterByLaunchStatus(null);
+      setUpcoming(null);
       let temp = data.filter((mission) =>
         mission.rocket.rocket_name.includes(searchByName)
       );
@@ -40,12 +40,13 @@ const Homepage = () => {
     }
   }, [searchByName, data]);
 
-
   // ----------------------------- Filter by launch date --------------------------------
 
   useEffect(() => {
     if (filterByLaunchDate) {
       setSearchByName(null);
+      setFilterByLaunchStatus(null);
+      setUpcoming(null);
       if (filterByLaunchDate === 1) {
         let date = new Date();
         const newDate = new Date(date.setDate(date.getDate() - 7));
@@ -88,12 +89,13 @@ const Homepage = () => {
     }
   }, [filterByLaunchDate, data]);
 
-
   // ---------------------------- Filter by launch status -----------------------------------
 
   useEffect(() => {
     if (filterByLaunchStatus) {
+      setSearchByName(null);
       setFilterByLaunchDate(null);
+      setUpcoming(null);
       if (filterByLaunchStatus === 1) {
         let temp = data.filter((mission) => mission.launch_success);
         console.log(temp);
@@ -113,7 +115,9 @@ const Homepage = () => {
 
   useEffect(() => {
     if (upcoming) {
+      setSearchByName(null);
       setFilterByLaunchDate(null);
+      setFilterByLaunchStatus(null);
       if (upcoming === 1) {
         let temp = data.filter((mission) => mission.upcoming);
         console.log(temp);
