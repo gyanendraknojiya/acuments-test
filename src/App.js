@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setApiData } from "./redux/reducer";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  console.log(state);
+
+
+  useEffect(() => {
+  let url = "https://api.spacexdata.com/v3/launches";
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        dispatch(setApiData(res));
+      });
+  }, []);
+
+  return <div></div>;
 }
 
 export default App;
